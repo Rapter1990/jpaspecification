@@ -7,7 +7,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.Date;
-import java.util.Set;
 
 @Data
 @Entity
@@ -37,7 +36,7 @@ public class Employee extends BaseEntity {
     @Column(name = "COMPANY_NAME")
     private String companyName;
 
-    @ManyToMany
-    private Set<Department> departments;
+    @ManyToOne
+    private Department department;
 
 }
