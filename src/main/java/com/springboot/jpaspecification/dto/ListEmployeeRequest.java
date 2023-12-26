@@ -63,7 +63,7 @@ public class ListEmployeeRequest implements Filterable<Employee> {
         }
 
         if (filter.lastName != null) {
-            specification = specification.and(EmployeeSpecification.hasFirstName(filter.lastName));
+            specification = specification.and(EmployeeSpecification.hasLastName(filter.lastName));
         }
 
         if (!CollectionUtils.isEmpty(Collections.singleton(filter.departmentName))) {

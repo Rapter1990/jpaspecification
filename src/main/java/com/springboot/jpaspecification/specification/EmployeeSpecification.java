@@ -17,6 +17,11 @@ public class EmployeeSpecification {
                 criteriaBuilder.equal(root.get("firstName"), name);
     }
 
+    public static Specification<Employee> hasLastName(String name) {
+        return (root, query, criteriaBuilder) ->
+                criteriaBuilder.equal(root.get("lastName"), name);
+    }
+
     public static Specification<Employee> hasCategoryNameLike(String departmentName) {
         return (root, query, criteriaBuilder) -> {
             Join<Employee, Department> departmentJoin = root.join("department");
