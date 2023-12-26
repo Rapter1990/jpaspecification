@@ -10,6 +10,10 @@ import net.datafaker.Faker;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Configuration;
 
+import java.time.LocalDate;
+import java.time.Period;
+import java.time.ZoneId;
+import java.util.Date;
 import java.util.List;
 
 @Configuration
@@ -39,16 +43,25 @@ public class InitialDataConfig implements CommandLineRunner {
 
     private void generateFakeEmployees(int amount) {
         for (int i = 0; i < amount; i++) {
+
+            LocalDate birthdayDate = faker.date().birthday().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+            int age = calculateAge(birthdayDate);
+
             Employee employee = Employee.builder()
                     .firstName(faker.name().firstName())
                     .lastName(faker.name().lastName())
-                    .birthdayDate(faker.date().birthday())
-                    .age(faker.number().numberBetween(20, 60))
+                    .birthdayDate(Date.from(birthdayDate.atStartOfDay(ZoneId.systemDefault()).toInstant()))
+                    .age(age)
                     .companyName(faker.company().name())
                     .department(randomlyChooseDepartment())
                     .build();
             employeeRepository.save(employee);
         }
+    }
+
+    private int calculateAge(LocalDate birthday) {
+        LocalDate currentDate = LocalDate.now();
+        return Period.between(birthday, currentDate).getYears();
     }
 
     private Department randomlyChooseDepartment() {
