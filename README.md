@@ -230,21 +230,21 @@ $ mvn spring-boot:run
 <details>
 <summary>Click here to show the screenshots of project</summary>
     <p> Figure 1 </p>
-    <img src ="screenshots/1.PNG">
+    <img src ="screenshots/1.png">
     <p> Figure 2 </p>
-    <img src ="screenshots/2.PNG">
+    <img src ="screenshots/2.png">
     <p> Figure 3 </p>
-    <img src ="screenshots/3.PNG">
+    <img src ="screenshots/3.png">
     <p> Figure 4 </p>
-    <img src ="screenshots/4.PNG">
+    <img src ="screenshots/4.png">
     <p> Figure 5 </p>
-    <img src ="screenshots/5.PNG">
+    <img src ="screenshots/5.png">
     <p> Figure 6 </p>
-    <img src ="screenshots/6.PNG">
+    <img src ="screenshots/6.png">
     <p> Figure 7 </p>
-    <img src ="screenshots/7.PNG">
+    <img src ="screenshots/7.png">
     <p> Figure 8 </p>
-    <img src ="screenshots/8.PNG">
+    <img src ="screenshots/8.png">
 </details>
 
 ### Contributors
