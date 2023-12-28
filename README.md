@@ -7,15 +7,11 @@
 ### 📖 Information
 
 <ul style="list-style-type:disc">
-  <li>This <b>Spring Boot</b> application showcases the integration of the <b>Kubernetes Java Client API</b> to manage Kubernetes resources efficiently.</li> 
-  <li>The implemented features cover the processes of <b>listing</b>, <b>creating</b>, <b>editing</b>, and <b>deleting</b> the following <b>Kubernetes</b> resources:</li>
-  <ul>
-    <li>Namespace</li>
-    <li>Pod</li>
-    <li>Service</li>
-    <li>Deployment</li>
-  </ul>
+  <li>This <b>Spring Boot</b> application showcases the integration of <b>Spring Data JPA Specifications</b> for dynamic and fine-grained querying of employee records.</li> 
+  <li>The implemented features include processes such as <b>listing</b>, <b>filtering</b>, and <b>retrieving</b> employee records based on various criteria using specifications.</li>
+  <li>Specifications are employed to construct flexible queries, enabling the application to efficiently retrieve specific sets of employees based on dynamic conditions.</li>
 </ul>
+
 
 ### Explore Rest APIs
 
