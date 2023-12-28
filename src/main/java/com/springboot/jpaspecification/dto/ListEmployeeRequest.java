@@ -9,12 +9,23 @@ import org.springframework.data.jpa.domain.Specification;
 import java.time.LocalDate;
 import java.util.Optional;
 
+/**
+ * Request object named {@link ListEmployeeRequest} for filtering and searching employees based on specified criteria.
+ * Implements the {@link Filterable} interface, allowing conversion of filter criteria into
+ * Spring Data JPA Specifications for querying the database.
+ */
 @Getter
 @Setter
 public class ListEmployeeRequest implements Filterable<Employee> {
 
+    /**
+     * The filter criteria for employee search.
+     */
     private Filter filter;
 
+    /**
+     * Inner class representing the filter criteria for employee search.
+     */
     @Getter
     @Setter
     public static class Filter {
@@ -25,6 +36,9 @@ public class ListEmployeeRequest implements Filterable<Employee> {
         private Optional<String> departmentName = Optional.empty();
         private Optional<BirthdayDate> birthdayDate = Optional.empty();
 
+        /**
+         * Inner class representing the filter criteria for birthday dates.
+         */
         @Getter
         @Setter
         public static class BirthdayDate {
@@ -33,6 +47,9 @@ public class ListEmployeeRequest implements Filterable<Employee> {
             private Optional<LocalDate> birthdayDateSecond = Optional.empty();
             private DateComparison dateComparison;
 
+            /**
+             * Enumeration representing different types of date comparisons.
+             */
             public enum DateComparison {
                 AT,
                 AFTER,
@@ -43,6 +60,12 @@ public class ListEmployeeRequest implements Filterable<Employee> {
         }
     }
 
+    /**
+     * Converts the filter criteria into a Spring Data JPA Specification for querying employees.
+     *
+     * @return A {@link Specification} representing the filter criteria for querying employees.
+     * @see EmployeeSpecification
+     */
     @Override
     public Specification<Employee> toSpecification() {
 
