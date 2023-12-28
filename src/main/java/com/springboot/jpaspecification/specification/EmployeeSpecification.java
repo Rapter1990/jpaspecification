@@ -7,6 +7,7 @@ import jakarta.persistence.criteria.Join;
 import lombok.experimental.UtilityClass;
 import org.springframework.data.jpa.domain.Specification;
 
+import java.time.LocalDate;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.TimeZone;
@@ -47,29 +48,29 @@ public class EmployeeSpecification {
         };
     }
 
-    public static Specification<Employee> birthdayDatedAt(Date date) {
+    public static Specification<Employee> birthdayDatedAt(LocalDate date) {
         return (root, query, criteriaBuilder) -> {
             // Truncate the time component of the input date
-            Date truncatedDate = truncateTime(date);
+            //Date truncatedDate = truncateTime(date);
 
             // Check if the birthdayDate is within the specified day
             return criteriaBuilder.equal(
-                    root.get("birthdayDate"), truncatedDate
+                    root.get("birthdayDate"), date
             );
         };
     }
 
-    public static Specification<Employee> birthdayDateBeforeThan(Date date) {
+    public static Specification<Employee> birthdayDateBeforeThan(LocalDate date) {
         return (root, query, criteriaBuilder) ->
                 criteriaBuilder.lessThan(root.get("birthdayDate"), date);
     }
 
-    public static Specification<Employee> birthdayDateAfterThan(Date date) {
+    public static Specification<Employee> birthdayDateAfterThan(LocalDate date) {
         return (root, query, criteriaBuilder) ->
                 criteriaBuilder.greaterThan(root.get("birthdayDate"), date);
     }
 
-    public static Specification<Employee> birthdayDateBetween(Date startDate, Date endDate) {
+    public static Specification<Employee> birthdayDateBetween(LocalDate startDate, LocalDate endDate) {
         return (root, query, criteriaBuilder) ->
                 criteriaBuilder.between(root.get("birthdayDate"), startDate, endDate);
     }

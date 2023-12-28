@@ -9,6 +9,7 @@ import lombok.Setter;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.util.CollectionUtils;
 
+import java.time.LocalDate;
 import java.util.Collections;
 import java.util.Date;
 import java.util.Optional;
@@ -34,8 +35,8 @@ public class ListEmployeeRequest implements Filterable<Employee> {
         @Setter
         public static class BirthdayDate {
 
-            private Optional<Date> birthdayDateFirst = Optional.empty();
-            private Optional<Date> birthdayDateSecond = Optional.empty();
+            private Optional<LocalDate> birthdayDateFirst = Optional.empty();
+            private Optional<LocalDate> birthdayDateSecond = Optional.empty();
             private DateComparison dateComparison;
 
             public enum DateComparison {
@@ -66,7 +67,7 @@ public class ListEmployeeRequest implements Filterable<Employee> {
                 specification[0] = specification[0].and(EmployeeSpecification.hasCategoryNameLike(departmentName)));
 
         filter.getBirthdayDate().ifPresent(birthdayDate -> {
-            Date date = birthdayDate.getBirthdayDateFirst().orElse(null);
+            LocalDate date = birthdayDate.getBirthdayDateFirst().orElse(null);
             Filter.BirthdayDate.DateComparison dateComparison = birthdayDate.getDateComparison();
 
             if (date != null && dateComparison != null) {
@@ -75,8 +76,8 @@ public class ListEmployeeRequest implements Filterable<Employee> {
                     case AFTER -> specification[0].and(EmployeeSpecification.birthdayDateAfterThan(date));
                     case BEFORE -> specification[0].and(EmployeeSpecification.birthdayDateBeforeThan(date));
                     case BETWEEN -> {
-                        Date startDate = birthdayDate.getBirthdayDateFirst().orElse(null);
-                        Date endDate = birthdayDate.getBirthdayDateSecond().orElse(null);
+                        LocalDate startDate = birthdayDate.getBirthdayDateFirst().orElse(null);
+                        LocalDate endDate = birthdayDate.getBirthdayDateSecond().orElse(null);
                         yield specification[0].and(EmployeeSpecification.birthdayDateBetween(startDate, endDate));
                     }
                     default -> specification[0];
