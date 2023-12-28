@@ -1,19 +1,13 @@
 package com.springboot.jpaspecification.dto;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
 import com.springboot.jpaspecification.entity.Employee;
 import com.springboot.jpaspecification.specification.EmployeeSpecification;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.jpa.domain.Specification;
-import org.springframework.util.CollectionUtils;
 
 import java.time.LocalDate;
-import java.util.Collections;
-import java.util.Date;
 import java.util.Optional;
-import java.util.Set;
 
 @Getter
 @Setter

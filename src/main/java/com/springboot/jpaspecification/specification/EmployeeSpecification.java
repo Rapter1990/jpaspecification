@@ -10,7 +10,6 @@ import org.springframework.data.jpa.domain.Specification;
 import java.time.LocalDate;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.TimeZone;
 
 @UtilityClass
 public class EmployeeSpecification {
