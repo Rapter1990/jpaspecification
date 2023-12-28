@@ -6,6 +6,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 @Data
@@ -28,7 +29,7 @@ public class Employee extends BaseEntity {
     private String lastName;
 
     @Column(name = "BIRTHDAY_DATE")
-    private Date birthdayDate;
+    private LocalDate birthdayDate;
 
     @Column(name = "AGE")
     private Integer age;

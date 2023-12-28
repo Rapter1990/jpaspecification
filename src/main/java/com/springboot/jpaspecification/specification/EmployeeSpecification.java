@@ -7,7 +7,9 @@ import jakarta.persistence.criteria.Join;
 import lombok.experimental.UtilityClass;
 import org.springframework.data.jpa.domain.Specification;
 
+import java.util.Calendar;
 import java.util.Date;
+import java.util.TimeZone;
 
 @UtilityClass
 public class EmployeeSpecification {
@@ -46,8 +48,15 @@ public class EmployeeSpecification {
     }
 
     public static Specification<Employee> birthdayDatedAt(Date date) {
-        return (root, query, criteriaBuilder) ->
-                criteriaBuilder.equal(root.get("birthdayDate"), date);
+        return (root, query, criteriaBuilder) -> {
+            // Truncate the time component of the input date
+            Date truncatedDate = truncateTime(date);
+
+            // Check if the birthdayDate is within the specified day
+            return criteriaBuilder.equal(
+                    root.get("birthdayDate"), truncatedDate
+            );
+        };
     }
 
     public static Specification<Employee> birthdayDateBeforeThan(Date date) {
@@ -63,6 +72,16 @@ public class EmployeeSpecification {
     public static Specification<Employee> birthdayDateBetween(Date startDate, Date endDate) {
         return (root, query, criteriaBuilder) ->
                 criteriaBuilder.between(root.get("birthdayDate"), startDate, endDate);
+    }
+
+    private static Date truncateTime(Date date) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        calendar.set(Calendar.HOUR_OF_DAY, 0);
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.SECOND, 0);
+        calendar.set(Calendar.MILLISECOND, 0);
+        return calendar.getTime();
     }
 
 }

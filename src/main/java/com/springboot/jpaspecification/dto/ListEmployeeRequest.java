@@ -1,5 +1,7 @@
 package com.springboot.jpaspecification.dto;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonValue;
 import com.springboot.jpaspecification.entity.Employee;
 import com.springboot.jpaspecification.specification.EmployeeSpecification;
 import lombok.Getter;
@@ -9,6 +11,7 @@ import org.springframework.util.CollectionUtils;
 
 import java.util.Collections;
 import java.util.Date;
+import java.util.Optional;
 import java.util.Set;
 
 @Getter
@@ -19,75 +22,68 @@ public class ListEmployeeRequest implements Filterable<Employee> {
 
     @Getter
     @Setter
-    private static class Filter {
+    public static class Filter {
 
-        private String keyword;
-        private String firstName;
-        private String lastName;
-
-
-        private String departmentName;
-        private BirthdayDate birthdayDate;
+        private Optional<String> keyword = Optional.empty();
+        private Optional<String> firstName = Optional.empty();
+        private Optional<String> lastName = Optional.empty();
+        private Optional<String> departmentName = Optional.empty();
+        private Optional<BirthdayDate> birthdayDate = Optional.empty();
 
         @Getter
         @Setter
-        private static class BirthdayDate {
+        public static class BirthdayDate {
 
-            private Date birthdayDateFirst;
-
-            private Date birthdayDateSecond;
+            private Optional<Date> birthdayDateFirst = Optional.empty();
+            private Optional<Date> birthdayDateSecond = Optional.empty();
             private DateComparison dateComparison;
 
-            private enum DateComparison {
+            public enum DateComparison {
                 AT,
                 AFTER,
                 BEFORE,
                 BETWEEN
+
             }
         }
-
     }
-
 
     @Override
     public Specification<Employee> toSpecification() {
 
-        Specification<Employee> specification = Specification.where(null);
+        final Specification<Employee>[] specification = new Specification[]{Specification.where(null)};
 
-        if (filter.keyword != null) {
-            specification = specification.and(EmployeeSpecification.search(filter.keyword));
-        }
+        filter.getKeyword().ifPresent(keyword ->
+                specification[0] = specification[0].and(EmployeeSpecification.search(keyword)));
 
-        if (filter.firstName != null) {
-            specification = specification.and(EmployeeSpecification.hasFirstName(filter.firstName));
-        }
+        filter.getFirstName().ifPresent(firstName ->
+                specification[0] = specification[0].and(EmployeeSpecification.hasFirstName(firstName)));
 
-        if (filter.lastName != null) {
-            specification = specification.and(EmployeeSpecification.hasLastName(filter.lastName));
-        }
+        filter.getLastName().ifPresent(lastName ->
+                specification[0] = specification[0].and(EmployeeSpecification.hasLastName(lastName)));
 
-        if (!CollectionUtils.isEmpty(Collections.singleton(filter.departmentName))) {
-            specification = specification.and(EmployeeSpecification.hasCategoryNameLike(filter.departmentName));
-        }
+        filter.getDepartmentName().ifPresent(departmentName ->
+                specification[0] = specification[0].and(EmployeeSpecification.hasCategoryNameLike(departmentName)));
 
-        if (filter.birthdayDate != null && filter.birthdayDate.birthdayDateFirst != null && filter.birthdayDate.dateComparison != null) {
-            Date date = filter.birthdayDate.birthdayDateFirst;
-            Filter.BirthdayDate.DateComparison dateComparison = filter.birthdayDate.dateComparison;
+        filter.getBirthdayDate().ifPresent(birthdayDate -> {
+            Date date = birthdayDate.getBirthdayDateFirst().orElse(null);
+            Filter.BirthdayDate.DateComparison dateComparison = birthdayDate.getDateComparison();
 
-            specification = switch (dateComparison) {
-                case AT -> specification.and(EmployeeSpecification.birthdayDatedAt(date));
-                case AFTER -> specification.and(EmployeeSpecification.birthdayDateBeforeThan(date));
-                case BEFORE -> specification.and(EmployeeSpecification.birthdayDateAfterThan(date));
-                case BETWEEN -> {
-                    Date startDate = filter.birthdayDate.birthdayDateFirst;
-                    Date endDate = filter.birthdayDate.birthdayDateSecond;
-                    yield specification.and(EmployeeSpecification.birthdayDateBetween(startDate, endDate));
-                }
-                default -> specification;
-            };
-        }
+            if (date != null && dateComparison != null) {
+                specification[0] = switch (dateComparison) {
+                    case AT -> specification[0].and(EmployeeSpecification.birthdayDatedAt(date));
+                    case AFTER -> specification[0].and(EmployeeSpecification.birthdayDateAfterThan(date));
+                    case BEFORE -> specification[0].and(EmployeeSpecification.birthdayDateBeforeThan(date));
+                    case BETWEEN -> {
+                        Date startDate = birthdayDate.getBirthdayDateFirst().orElse(null);
+                        Date endDate = birthdayDate.getBirthdayDateSecond().orElse(null);
+                        yield specification[0].and(EmployeeSpecification.birthdayDateBetween(startDate, endDate));
+                    }
+                    default -> specification[0];
+                };
+            }
+        });
 
-        return specification;
+        return specification[0];
     }
-
 }

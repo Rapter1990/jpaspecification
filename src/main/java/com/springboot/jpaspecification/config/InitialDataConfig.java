@@ -50,7 +50,7 @@ public class InitialDataConfig implements CommandLineRunner {
             Employee employee = Employee.builder()
                     .firstName(faker.name().firstName())
                     .lastName(faker.name().lastName())
-                    .birthdayDate(Date.from(birthdayDate.atStartOfDay(ZoneId.systemDefault()).toInstant()))
+                    .birthdayDate(birthdayDate)
                     .age(age)
                     .companyName(faker.company().name())
                     .department(randomlyChooseDepartment())
